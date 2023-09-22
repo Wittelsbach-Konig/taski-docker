@@ -14,12 +14,16 @@ services:
     env_file: .env
     volumes:
       - static_volume:/backend_static
+    depends_on:
+      - db
   frontend:
     image: beonewithyuri/taski_frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
+    depends_on:
+      - backend
   gateway:
     image: beonewithyuri/taski_gateway
     env_file: .env
@@ -27,3 +31,6 @@ services:
       - static_volume:/staticfiles/
     ports:
       - 8000:80
+    depends_on:
+      - frontend
+      - backend
